@@ -1,0 +1,14 @@
+sudo: required
+dist: trusty
+
+service:
+  - docker
+
+script:
+  - docker build -t solr .
+  - sudo docker run -d --privileged=true --name my_solr -d -p 8983:8983 solr
+  - sleep 10
+  - curl -o /tmp/output.html localhost:8983
+
+after_failure:
+  - docker logs my_solr
