@@ -16,6 +16,7 @@ RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$SOLR_KEY"
 ENV SOLR_VERSION 5.3.1
 ENV SOLR_SHA256 34ddcac071226acd6974a392af7671f687990aa1f9eb4b181d533ca6dca6f42d
 
+ADD entrypoint.sh /opt/solr/entrypoint.sh
 RUN mkdir -p /opt/solr && \
     wget -nv --output-document=/opt/solr.tgz http://archive.apache.org/dist/lucene/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz && \
     wget -nv --output-document=/opt/solr.tgz.asc http://archive.apache.org/dist/lucene/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz.asc && \
@@ -24,6 +25,7 @@ RUN mkdir -p /opt/solr && \
     tar -C /opt/solr --extract --file /opt/solr.tgz --strip-components=1 && \
     rm /opt/solr.tgz* && \
     mkdir -p /opt/solr/server/solr/lib && \
+    chmod a+x /opt/solr/entrypoint.sh && \
     chown -R $SOLR_USER:$SOLR_USER /opt/solr
 
 # https://issues.apache.org/jira/browse/SOLR-8107
@@ -32,4 +34,4 @@ RUN sed --in-place -e 's/^    "$JAVA" "${SOLR_START_OPTS\[@\]}" $SOLR_ADDL_ARGS 
 EXPOSE 8983
 WORKDIR /opt/solr
 USER $SOLR_USER
-CMD ["/opt/solr/bin/solr", "-f"]
+ENTRYPOINT ["/opt/solr/entrypoint.sh"]

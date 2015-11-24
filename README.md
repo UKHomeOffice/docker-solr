@@ -4,8 +4,6 @@
 
 This is a docker container for [Solr](http://lucene.apache.org/solr/).
 
-
-
 ## Getting Started
 
 These instructions will cover usage information and for the docker container 
@@ -76,6 +74,18 @@ docker exec -i -t solr1 /opt/solr/bin/solr create_collection \
         -c collection1 -shards 2 -p 8983
 ```
 Then go to `http://localhost:8983/solr/#/~cloud` (adjust the hostname for your docker host) to see the two shards and Solr nodes.
+
+## Environment Variables
+
+* `ZK_HOST` (Optional) The ZooKeeper connection string your current SolrCloud nodes use to connect 
+  to ZooKeeper; this value will be the same for all nodes in the cluster.
+* `SOLR_HOST` (Optional) The hostname each Solr node used to register with ZooKeeper when joining 
+  the SolrCloud cluster; this value will be used to set the host Java system property when starting 
+  the new Solr 5 process.
+* `SOLR_PORT` (Optional) The port each Solr node is listening on, such as 8983.
+* `OVERRIDE_SOLR_PORT` (Optional) Sets `SOLR_PORT` on runtime.
+* `SOLR_HOME` (Optional) The absolute path to the Solr home directory for each Solr node; this
+  directory must contain a solr.xml file
 
 ## Built With
 
