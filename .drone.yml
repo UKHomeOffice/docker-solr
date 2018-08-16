@@ -8,7 +8,7 @@ pipeline:
     commands:
       - docker build -t solr .
     when:
-      event: push
+      event: [push, pull_request]
 
   image_to_quay:
     image: quay.io/ukhomeofficedigital/drone-docker
