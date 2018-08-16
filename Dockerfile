@@ -4,4 +4,6 @@ ENV SOLR_USER="solr" \
     SOLR_UID="8983"
 
 USER $SOLR_UID
-ENTRYPOINT ["/opt/solr/entrypoint.sh"]
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["solr-foreground"]
